@@ -417,7 +417,7 @@ FileUtils.deleteQuietly(new File( vars.get(&quot;file&quot;)));</stringProp>
         <RecordingController guiclass="RecordController" testclass="RecordingController" testname="Recording Controller" enabled="false"/>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Users Downloading all templates" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Users Downloading all templates" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -532,7 +532,8 @@ bsh.shared.template = template;
 
 String templateId = template.get(&quot;id&quot;).asString();
 log.warn(templateId);
-vars.put(&quot;template_id&quot;, templateId);
+//vars.put(&quot;template_id&quot;, templateId);
+vars.put(&quot;template_id&quot;, &quot;mock&quot;);
 
 templateInx++;
 bsh.shared.templateIndex = templateInx;
@@ -622,11 +623,17 @@ String version = obj.get(&quot;version&quot;).asString();
 String md5 = obj.get(&quot;md5&quot;).asString();
 String type = obj.get(&quot;type&quot;).asString();
 
-vars.put(&quot;template_id&quot;, templateId);
-vars.put(&quot;template_name&quot;, name);
-vars.put(&quot;template_version&quot;, version);
-vars.put(&quot;template_md5&quot;, md5);
-vars.put(&quot;template_type&quot;, type);
+//vars.put(&quot;template_id&quot;, templateId);
+//vars.put(&quot;template_name&quot;, name);
+//vars.put(&quot;template_version&quot;, version);
+//vars.put(&quot;template_md5&quot;, md5);
+//vars.put(&quot;template_type&quot;, type);
+
+vars.put(&quot;template_id&quot;, &quot;mock&quot;);
+vars.put(&quot;template_name&quot;, &quot;mock&quot;);
+vars.put(&quot;template_version&quot;, &quot;mock&quot;);
+vars.put(&quot;template_md5&quot;, &quot;mock&quot;);
+vars.put(&quot;template_type&quot;, &quot;mock&quot;);
 
 </stringProp>
             </BeanShellPreProcessor>
@@ -634,7 +641,7 @@ vars.put(&quot;template_type&quot;, type);
           </hashTree>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Users Downloading all deb files" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Users Downloading all deb files" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -751,7 +758,8 @@ bsh.shared.deb = deb;
 
 String debMd5 = deb.get(&quot;md5&quot;).asString();
 log.warn(templateId);
-vars.put(&quot;deb_md5&quot;, debMd5);
+//vars.put(&quot;deb_md5&quot;, debMd5);
+vars.put(&quot;deb_md5&quot;, &quot;mock&quot;);
 
 
 
@@ -825,9 +833,13 @@ String debMd5 = deb.get(&quot;md5&quot;).asString();
 String debName = deb.get(&quot;name&quot;).asString();
 String debVersion = deb.get(&quot;version&quot;).asString();
 log.warn(debMd5);
-vars.put(&quot;deb_md5&quot;, debMd5);
-vars.put(&quot;deb_name&quot;, debName);
-vars.put(&quot;deb_version&quot;, debVersion);
+//vars.put(&quot;deb_md5&quot;, debMd5);
+//vars.put(&quot;deb_name&quot;, debName);
+//vars.put(&quot;deb_version&quot;, debVersion);
+
+vars.put(&quot;deb_md5&quot;, &quot;mock&quot;);
+vars.put(&quot;deb_name&quot;, &quot;mock&quot;);
+vars.put(&quot;deb_version&quot;, &quot;mock&quot;);
 
 
 
@@ -837,7 +849,7 @@ vars.put(&quot;deb_version&quot;, debVersion);
           </hashTree>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Users Downloading all raw files" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Users Downloading all raw files" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -957,7 +969,9 @@ bsh.shared.file = file;
 
 String fileId = file.get(&quot;id&quot;).asString();
 log.warn(fileId);
-vars.put(&quot;file_id&quot;, fileId);
+
+//vars.put(&quot;file_id&quot;, fileId);
+vars.put(&quot;file_id&quot;, &quot;mock&quot;);
 
 
 
@@ -1048,11 +1062,18 @@ String fileMd5 = file.get(&quot;md5&quot;).asString();
 String fileType = file.get(&quot;type&quot;).asString();
 String fileFingerprint = file.get(&quot;fingerprint&quot;).asString();
 log.warn(fileId);
-vars.put(&quot;file_id&quot;, fileId);
-vars.put(&quot;file_name&quot;, fileName);
-vars.put(&quot;file_md5&quot;, fileMd5);
-vars.put(&quot;file_type&quot;, fileType);
-vars.put(&quot;file_fingerprint&quot;, fileFingerprint);
+
+//vars.put(&quot;file_id&quot;, fileId);
+//vars.put(&quot;file_name&quot;, fileName);
+//vars.put(&quot;file_md5&quot;, fileMd5);
+//vars.put(&quot;file_type&quot;, fileType);
+//vars.put(&quot;file_fingerprint&quot;, fileFingerprint);
+
+vars.put(&quot;file_id&quot;, &quot;mock&quot;);
+vars.put(&quot;file_name&quot;, &quot;mock&quot;);
+vars.put(&quot;file_md5&quot;, &quot;mock&quot;);
+vars.put(&quot;file_type&quot;, &quot;mock&quot;);
+vars.put(&quot;file_fingerprint&quot;, &quot;mock&quot;);
 
 
 
