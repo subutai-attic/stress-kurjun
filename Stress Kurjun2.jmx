@@ -527,9 +527,10 @@ JsonArray templates = bsh.shared.templates;
 
 int templateInx = bsh.shared.templateIndex;
 JsonValue value = templates.values().get(templateInx);
-JsonObject obj = value.asObject();
+JsonObject template = value.asObject();
+bsh.shared.template = template;
 
-String templateId = obj.get(&quot;id&quot;).asString();
+String templateId = template.get(&quot;id&quot;).asString();
 log.warn(templateId);
 vars.put(&quot;template_id&quot;, templateId);
 
@@ -613,11 +614,7 @@ bsh.shared.templateIndex = templateInx;
 
 log.info(&quot;Incrementing index&quot;);
 
-JsonArray templates = bsh.shared.templates;
-
-int templateInx = bsh.shared.templateIndex - 1;
-JsonValue value = templates.values().get(templateInx);
-JsonObject obj = value.asObject();
+JsonObject obj = bsh.shared.template;
 
 String templateId = obj.get(&quot;id&quot;).asString();
 String name = obj.get(&quot;name&quot;).asString();
@@ -746,6 +743,8 @@ JsonArray debs = bsh.shared.debs;
 
 int debInx = bsh.shared.debIndex;
 JsonValue debValue = debs.values().get(debInx);
+debInx++;
+bsh.shared.debIndex = debInx;
 
 JsonObject deb = debValue.asObject();
 bsh.shared.deb = deb;
@@ -754,8 +753,7 @@ String debMd5 = deb.get(&quot;md5&quot;).asString();
 log.warn(templateId);
 vars.put(&quot;deb_md5&quot;, debMd5);
 
-debInx++;
-bsh.shared.debIndex = debInx;
+
 
 
 
@@ -888,33 +886,38 @@ String jsonString = prev.getResponseDataAsString();
 JsonArray array = JsonArray.readFrom(jsonString);
 JsonArray tmp = new JsonArray();
 for (int i = 0; i &lt; array.values().size(); i++) {
-	JsonValue jsonValue = array.values().get(i);
-	JsonObject obj = jsonValue.asObject();
+	JsonValue fileValue = array.values().get(i);
+	JsonObject file = fileValue.asObject();
+
 	JsonObject tmpObj = new JsonObject();
-	tmpObj.set(&quot;id&quot;, obj.get(&quot;id&quot;));
+	tmpObj.set(&quot;id&quot;, file.get(&quot;id&quot;));
+	tmpObj.set(&quot;name&quot;, file.get(&quot;name&quot;));
+	tmpObj.set(&quot;md5&quot;, file.get(&quot;md5&quot;));
+	tmpObj.set(&quot;type&quot;, file.get(&quot;type&quot;));
+	tmpObj.set(&quot;fingerprint&quot;, file.get(&quot;fingerprint&quot;));
 	tmp.add(tmpObj);
 }
-bsh.shared.templates = tmp;
-bsh.shared.templateIndex = 0;
-vars.put(&quot;templates_count&quot;, String.valueOf(tmp.values().size()));
+bsh.shared.files = tmp;
+bsh.shared.fileIndex = 0;
+vars.put(&quot;files_count&quot;, String.valueOf(tmp.values().size()));
 </stringProp>
           </BeanShellPostProcessor>
           <hashTree/>
         </hashTree>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Download Raw files" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
-          <stringProp name="LoopController.loops">${templates_count}</stringProp>
+          <stringProp name="LoopController.loops">${files_count}</stringProp>
         </LoopController>
         <hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Download Raw file" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments">
-                <elementProp name="md5" elementType="HTTPArgument">
+                <elementProp name="id" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${template_id}</stringProp>
+                  <stringProp name="Argument.value">${file_id}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">md5</stringProp>
+                  <stringProp name="Argument.name">id</stringProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -924,7 +927,7 @@ vars.put(&quot;templates_count&quot;, String.valueOf(tmp.values().size()));
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
             <stringProp name="HTTPSampler.protocol">${protocol}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/kurjun/rest/deb/get</stringProp>
+            <stringProp name="HTTPSampler.path">/kurjun/rest/file/get</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -942,18 +945,21 @@ vars.put(&quot;templates_count&quot;, String.valueOf(tmp.values().size()));
 
 log.info(&quot;Incrementing index&quot;);
 
-JsonArray templates = bsh.shared.templates;
+JsonArray files = bsh.shared.files;
 
-int templateInx = bsh.shared.templateIndex;
-JsonValue value = templates.values().get(templateInx);
-JsonObject obj = value.asObject();
+int fileInx = bsh.shared.fileIndex;
+JsonValue value = files.values().get(fileInx);
+fileInx++;
+bsh.shared.fileIndex = fileInx;
 
-String templateId = obj.get(&quot;id&quot;).asString();
-log.warn(templateId);
-vars.put(&quot;template_id&quot;, &quot;qwer&quot;);
+JsonObject file = value.asObject();
+bsh.shared.file = file;
 
-templateInx++;
-bsh.shared.templateIndex = templateInx;
+String fileId = file.get(&quot;id&quot;).asString();
+log.warn(fileId);
+vars.put(&quot;file_id&quot;, fileId);
+
+
 
 
 
@@ -968,6 +974,92 @@ bsh.shared.templateIndex = templateInx;
               <boolProp name="FileSaver.successonly">false</boolProp>
               <boolProp name="FileSaver.addTimstamp">true</boolProp>
             </ResultSaver>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get info Raw file" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="id" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${file_id}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">id</stringProp>
+                </elementProp>
+                <elementProp name="name" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${file_name}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">name</stringProp>
+                </elementProp>
+                <elementProp name="md5" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${file_md5}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">md5</stringProp>
+                </elementProp>
+                <elementProp name="type" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${file_type}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">type</stringProp>
+                </elementProp>
+                <elementProp name="fingerprint" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${file_fingerprint}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">fingerprint</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${host}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol">${protocol}</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/kurjun/rest/file/info</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Increment template index" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">import com.eclipsesource.json.*;
+
+log.info(&quot;Incrementing index&quot;);
+
+JsonObject file = bsh.shared.file;
+
+String fileId = file.get(&quot;id&quot;).asString();
+String fileName = file.get(&quot;name&quot;).asString();
+String fileMd5 = file.get(&quot;md5&quot;).asString();
+String fileType = file.get(&quot;type&quot;).asString();
+String fileFingerprint = file.get(&quot;fingerprint&quot;).asString();
+log.warn(fileId);
+vars.put(&quot;file_id&quot;, fileId);
+vars.put(&quot;file_name&quot;, fileName);
+vars.put(&quot;file_md5&quot;, fileMd5);
+vars.put(&quot;file_type&quot;, fileType);
+vars.put(&quot;file_fingerprint&quot;, fileFingerprint);
+
+
+
+
+
+</stringProp>
+            </BeanShellPreProcessor>
             <hashTree/>
           </hashTree>
         </hashTree>
